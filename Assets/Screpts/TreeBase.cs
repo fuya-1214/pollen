@@ -3,7 +3,6 @@ using UnityEngine;
 public class TreeBase : MonoBehaviour
 {
     private int hp = 10;
-    [SerializeField] private ItemManager itemManager;
 
     // Update is called once per frame
     void Update()
@@ -14,8 +13,4 @@ public class TreeBase : MonoBehaviour
         }
     }
 
-    public void DropStump()
-    {
-        itemManager.ItemDrop();
-    }
 }

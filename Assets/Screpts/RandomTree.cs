@@ -19,7 +19,7 @@ public class RandomCube : MonoBehaviour
             // プレハブの位置をランダムで設定
             float x = Random.Range(a, b);
             float z = Random.Range(a, c);
-            Vector3 pos = new Vector3(x, 100.0f, z);
+            Vector3 pos = new Vector3(x, 101.0f, z);
 
             // プレハブを生成
             int number = Random.Range(0, Prefab.Length);

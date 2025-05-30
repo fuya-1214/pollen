@@ -3,10 +3,9 @@ using TMPro;
 
 public class Felling : MonoBehaviour
 {
-    [SerializeField] float maxDist;
+    [SerializeField] private float maxDist;
     [SerializeField] TextMeshProUGUI scoreText;
     public static int score = 0;
-    [SerializeField] private TreeBase treeBase;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,22 +25,15 @@ public class Felling : MonoBehaviour
         {
             if (Physics.Raycast(ray, out hit, maxDist))
             {
-                if (hit.collider.gameObject.name == "tree(Clone)")
+                if (hit.collider.gameObject.name == "tree")
                 {
-                    Destroy(hit.collider.gameObject);
+                    hit.collider.gameObject.SetActive(false);
                     AddScore();
-                    treeBase.DropStump();
                 }
-                else if (hit.collider.gameObject.name == "bigLeavesTree(Clone)")
+                else if (hit.collider.gameObject.name == "bigLeavesTree")
                 {
-                    Destroy(hit.collider.gameObject);
+                    hit.collider.gameObject.SetActive(false);
                     PullScore();
-                    treeBase.DropStump();
-                }
-                else if (hit.collider.gameObject.name == "tree")
-                {
-                    Destroy(hit.collider.gameObject);
-                    treeBase.DropStump();
                 }
             }
         }
