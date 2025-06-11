@@ -21,7 +21,7 @@ public class Move : MonoBehaviour
     Rigidbody rb;
 
     private Animator anim;
-
+    public bool move = true;
     public MovementState state;
 
     public enum MovementState
@@ -40,7 +40,7 @@ public class Move : MonoBehaviour
     }
 
     // Update is called once per frame
-        void Update()
+    void Update()
     {
         //地面と接しているかを判断
         grounded = Physics.Raycast(transform.position, Vector3.down, playerheight * 0.5f * 0.2f, Ground);
@@ -55,14 +55,25 @@ public class Move : MonoBehaviour
             rb.linearDamping = 0;
         }
 
-        StateHandler();
-        ProcessInput();
-        SpeedControl();
+        if (move)
+        {
+            StateHandler();
+            ProcessInput();
+            SpeedControl();
+        }
     }
 
     private void FixedUpdate()
     {
-        movePlayer();
+        if (move)
+        {
+            movePlayer();
+        }
+        else
+        {
+        anim.SetFloat("ForwardSpeed", 0);
+        anim.SetFloat("LateralSpeed", 0);
+        }
     }
 
     private void ProcessInput()
