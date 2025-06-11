@@ -20,6 +20,8 @@ public class Move : MonoBehaviour
 
     Rigidbody rb;
 
+    private Animator anim;
+
     public MovementState state;
 
     public enum MovementState
@@ -33,10 +35,12 @@ public class Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        GameObject child = transform.Find("HumanM_Dummy_Red - Dual Wield").gameObject;
+        anim = child.GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
+        void Update()
     {
         //地面と接しているかを判断
         grounded = Physics.Raycast(transform.position, Vector3.down, playerheight * 0.5f * 0.2f, Ground);
@@ -73,6 +77,8 @@ public class Move : MonoBehaviour
         // 向いている方向に進む
         moveDirection = orientation.forward * VerticalInput + orientation.right * HorizontalInput;
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        anim.SetFloat("ForwardSpeed", Input.GetAxis("Vertical"));
+        anim.SetFloat("LateralSpeed", Input.GetAxis("Horizontal"));
     }
 
     private void SpeedControl()

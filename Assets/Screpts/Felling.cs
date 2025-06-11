@@ -4,6 +4,7 @@ using TMPro;
 public class Felling : MonoBehaviour
 {
     [SerializeField] private float maxDist;
+    [SerializeField] private Animator anim; 
     [SerializeField] TextMeshProUGUI scoreText;
     public static int score = 0;
 
@@ -23,6 +24,7 @@ public class Felling : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            anim.SetTrigger("Felling");
             if (Physics.Raycast(ray, out hit, maxDist))
             {
                 if (hit.collider.gameObject.name == "tree")
