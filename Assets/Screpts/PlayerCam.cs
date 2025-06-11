@@ -8,6 +8,8 @@ public class PlayerCam : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] private Transform CamHolder;
 
+    [SerializeField] private float viewAngle;
+
     private float xRotation;
     private float yRotation;
 
@@ -16,7 +18,7 @@ public class PlayerCam : MonoBehaviour
     {
         //　マウスポインターを真ん中に固定し見えなくする
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false; 
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -32,12 +34,28 @@ public class PlayerCam : MonoBehaviour
 
             xRotation -= mouseY;
 
-            // Y軸だけ視点に上限を設ける
-            xRotation = Mathf.Clamp(xRotation, -90, 90);
-
+            Rotate(mouseX, mouseY, viewAngle);
             // カメラとプレイヤーの向きを動かす
             CamHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.rotation = Quaternion.Euler(0, yRotation, 0);
         }
     }
+
+    void Rotate(float mouseX,float mouseY,float limit)
+    {
+        float maxLimit = limit, minLimit = 360 - maxLimit;
+        //X軸回転
+        var localAngle = transform.localEulerAngles;
+        localAngle.x += mouseY;
+        if (localAngle.x > maxLimit && localAngle.x < 180)
+            localAngle.x = maxLimit;
+        if (localAngle.x < minLimit && localAngle.x > 180)
+            localAngle.x = minLimit;
+        transform.localEulerAngles = localAngle;
+        //Y軸回転
+        var angle = transform.eulerAngles;
+        angle.y += mouseX;
+        transform.eulerAngles = angle;
+    }
+
 }
