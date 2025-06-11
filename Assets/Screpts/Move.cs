@@ -20,6 +20,8 @@ public class Move : MonoBehaviour
 
     Rigidbody rb;
 
+    private Animator anim;
+    public bool move = true;
     public MovementState state;
 
     public enum MovementState
@@ -33,6 +35,8 @@ public class Move : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        GameObject child = transform.Find("HumanM_Dummy_Red - Dual Wield").gameObject;
+        anim = child.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -51,14 +55,25 @@ public class Move : MonoBehaviour
             rb.linearDamping = 0;
         }
 
-        StateHandler();
-        ProcessInput();
-        SpeedControl();
+        if (move)
+        {
+            StateHandler();
+            ProcessInput();
+            SpeedControl();
+        }
     }
 
     private void FixedUpdate()
     {
-        movePlayer();
+        if (move)
+        {
+            movePlayer();
+        }
+        else
+        {
+        anim.SetFloat("ForwardSpeed", 0);
+        anim.SetFloat("LateralSpeed", 0);
+        }
     }
 
     private void ProcessInput()
@@ -73,6 +88,8 @@ public class Move : MonoBehaviour
         // 向いている方向に進む
         moveDirection = orientation.forward * VerticalInput + orientation.right * HorizontalInput;
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        anim.SetFloat("ForwardSpeed", Input.GetAxis("Vertical"));
+        anim.SetFloat("LateralSpeed", Input.GetAxis("Horizontal"));
     }
 
     private void SpeedControl()
