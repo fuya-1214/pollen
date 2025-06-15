@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class Event : MonoBehaviour
 {
-    public Shaker shaker;
+    [SerializeField] private Shaker shaker;
+    [SerializeField] private Tears tears;
 
     // Update is called once per frame
     void Update()
     {
-        //Shaker shaker = GetComponent<Shaker>();
-
-        shaker.CShake();
+        tears.EventSneeze();
+        shaker.EventShake();
     }
 }

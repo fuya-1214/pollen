@@ -17,39 +17,45 @@ public class Felling : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            anim.SetTrigger("Felling");
+            Invoke("Cut", 2.0f);
+        }
+    }
+
+    // 目の前の距離に応じてその物体を消す
+    private void Cut()
+    {
         Vector3 pos = transform.position;
         pos.y += 0.5f;
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(ray, out hit, maxDist))
         {
-            anim.SetTrigger("Felling");
-            if (Physics.Raycast(ray, out hit, maxDist))
+            if (hit.collider.gameObject.name == "tree")
             {
-                if (hit.collider.gameObject.name == "tree")
-                {
-                    hit.collider.gameObject.SetActive(false);
-                    AddScore();
-                }
-                else if (hit.collider.gameObject.name == "bigLeavesTree")
-                {
-                    hit.collider.gameObject.SetActive(false);
-                    PullScore();
-                }
+                hit.collider.gameObject.SetActive(false);
+                AddScore();
+            }
+            else if (hit.collider.gameObject.name == "bigLeavesTree")
+            {
+                hit.collider.gameObject.SetActive(false);
+                PullScore();
             }
         }
     }
 
     // スコアを加算するメソッド
-    public void AddScore()
+    private void AddScore()
     {
         score++;
         UpdateScoreText(); // スコアを更新
     }
 
     // スコアを減算するメソッド
-    public void PullScore()
+    private void PullScore()
     {
         score--;
         UpdateScoreText(); // スコアを更新
