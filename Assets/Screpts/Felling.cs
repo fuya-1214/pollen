@@ -7,11 +7,14 @@ public class Felling : MonoBehaviour
     [SerializeField] private Animator anim; 
     [SerializeField] TextMeshProUGUI scoreText;
     public static int score = 0;
+    [SerializeField] private GameObject pCam;  // 基本カメラ
+    [SerializeField] private GameObject fellingCam; // 斧振る時のみカメラ
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         UpdateScoreText(); // 初期スコアを画面に表示
+        fellingCam.SetActive(false);
     }
 
     // Update is called once per frame
@@ -20,7 +23,9 @@ public class Felling : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("Felling");
-            Invoke("Cut", 2.0f);
+            pCam.SetActive(false);
+            fellingCam.SetActive(true);
+            Invoke("Cut", 1.5f);
         }
     }
 
@@ -45,6 +50,8 @@ public class Felling : MonoBehaviour
                 PullScore();
             }
         }
+        pCam.SetActive(true);
+        fellingCam.SetActive(false);
     }
 
     // スコアを加算するメソッド

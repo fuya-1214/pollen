@@ -4,23 +4,19 @@ using UnityEngine.InputSystem;
 
 public class Shaker : MonoBehaviour // カメラを揺らす
 {
-    public bool vib = true;
+    private bool vib = true;
     private bool shake2 = false;
     private int counter;
     private int countMax = 10;
     [SerializeField] private Animator anim; 
-    [SerializeField] private Tears tears;
+    [SerializeField] private Event @event;
 
     public void EventShake()
     {
         if (vib)
         {
-            Invoke("Shake1", Random.Range(1.0f, 10.0f));
-        }
-        else
-        {
-            Invoke("Cancel", 0.1f);
-            Shake2();
+            Shake1();
+            //Invoke("Shake1", Random.Range(2.0f, 10.0f));
         }
     }
 
@@ -37,16 +33,15 @@ public class Shaker : MonoBehaviour // カメラを揺らす
     private void Shake1()
     {
         vib = false;
-        tears.tear = false;
         anim.SetTrigger("Sneeze");
         var impulseSource = GetComponent<CinemachineImpulseSource>();
         impulseSource.GenerateImpulse();
         Invoke("Check", 5.0f);
     }
 
-    private void Shake2()
+    public void Shake2()
     {
-        if (shake2 == true)
+        if (shake2)
         {
             Move move = GameObject.FindWithTag("Player").GetComponent<Move>();
             move.move = false;
@@ -61,7 +56,8 @@ public class Shaker : MonoBehaviour // カメラを揺らす
                     vib = true;
                     shake2 = false;
                     move.move = true;
-                    tears.tear = true;
+                    @event.stop = false;
+                    @event.ah = true;
                 }
             }
         }

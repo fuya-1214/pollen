@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class Tears : MonoBehaviour // 画面をにじませる
 {
-    public bool tear = true;
-    private bool tear2 = false;
+    private bool tear = true;
+    public bool tear2 = false;
     [SerializeField] private GameObject obscure;
     [SerializeField] private GameObject Red;
-    [SerializeField] private Shaker shaker;
+    [SerializeField] private Event @event;
 
-    public void EventSneeze()
+    public void EventTears()
     {
         if (tear)
         {
-            Invoke("Tear1", Random.Range(1.0f, 10.0f));
+            Tear1();
+            //Invoke("Tear1", Random.Range(1.0f, 20.0f));
         }
         else
         {
@@ -34,19 +35,15 @@ public class Tears : MonoBehaviour // 画面をにじませる
     private void Tear1()
     {
         tear = false;
-        shaker.vib = false;
         ColorOn();
-        Invoke("Check", 3.0f);
+        Invoke("Tear2", 3.0f);
     }
 
     private void Tear2()
     {
-        if (tear2 == true)
-        {
             obscure.SetActive(true);
 
             Invoke("AllOff", 5.0f);
-        }
     }
     private void ColorOn() // 画面を赤くする
     {
@@ -64,6 +61,7 @@ public class Tears : MonoBehaviour // 画面をにじませる
         tear2 = false;
         ColorOff();
         obscure.SetActive(false);
-        shaker.vib = true;
+        @event.stop = false;
+        @event.ah = true;
     }
 }
